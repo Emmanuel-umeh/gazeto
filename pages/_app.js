@@ -5,6 +5,7 @@ import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import Navbar from "../components/Navbar";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [chain.polygonMumbai],
@@ -43,6 +44,7 @@ const client = createClient({
 function MyApp({ Component, pageProps }) {
   return (
     <WagmiConfig client={client}>
+      <Navbar />
       <Component {...pageProps} />
     </WagmiConfig>
   );
