@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useAccount, useSendTransaction, useDisconnect } from "wagmi";
 import { useBalance } from "wagmi";
+import Balance from "../components/Balance";
+import Address from "../components/Address";
 
 export default function dashboard() {
   const [to, setTo] = useState("");
@@ -28,9 +30,11 @@ export default function dashboard() {
   return (
     <div>
       <div suppressHydrationWarning>
-        Balance: {data?.formatted} {data?.symbol}
+       <Balance />
       </div>
-      <div suppressHydrationWarning>{address}</div>
+      <div suppressHydrationWarning>
+          <Address />
+      </div>
 
       <button
         type="button"
