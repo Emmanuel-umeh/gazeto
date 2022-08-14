@@ -6,6 +6,7 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import Navbar from "../components/Navbar";
+import { MoralisProvider } from "react-moralis";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [chain.polygonMumbai],
@@ -43,10 +44,14 @@ const client = createClient({
 
 function MyApp({ Component, pageProps }) {
   return (
+
     <WagmiConfig client={client}>
+      <MoralisProvider appId={process.env.NEXT_PUBLIC_APP_ID} serverUrl={process.env.NEXT_PUBLIC_SERVER_URL}>
       <Navbar />
       <Component {...pageProps} />
+      </MoralisProvider>
     </WagmiConfig>
+
   );
 }
 
