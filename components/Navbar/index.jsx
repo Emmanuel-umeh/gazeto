@@ -63,7 +63,7 @@ const Navbar = () => {
                             </div>
                             <div
                                 className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                                {!isAuthenticated ?
+                                {isAuthenticated ?
                                     <>
                                         <button
                                             type="button"
@@ -144,7 +144,7 @@ const Navbar = () => {
                                                             <div className={"text-center mt-3 mb-3 w-full"}>
                                                                 <button
                                                                     type="button"
-                                                                    className=" w-full inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-dark bg-white hover:bg-black hover:text-white border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                                                    className=" w-full inline-flex items-center px-6 py-3 border border-2 border-transparent text-base font-medium rounded-md shadow-sm text-dark bg-white hover:bg-black hover:text-white border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                                 >
                                                                     Disconnect
                                                                 </button>

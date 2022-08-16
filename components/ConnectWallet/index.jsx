@@ -13,7 +13,7 @@ const ConnectWallet = () => {
     const {authenticate, isAuthenticated, account, chainId, logout} = useMoralis()
     console.log({account, isAuthenticated});
 
-    const connectToWallet = async () => {
+    const connectToWallet = async ({connectorId}) => {
         try {
             setLoading(true)
             await authenticate({provider: connectorId});
@@ -98,7 +98,7 @@ const ConnectWallet = () => {
                                                             type="button"
                                                             key={key}
                                                             className="w-full mt-5 inline-flex justify-between border border-gray-300 items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-dark hover:bg-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                                            onClick={connectToWallet}
+                                                            onClick={() => connectToWallet({connectorId})}
                                                         >
                                                             {title}
                                                             <Image width={30} height={30} src={icon} alt={title}/>

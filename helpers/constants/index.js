@@ -4,6 +4,6 @@ export const routes = [
     {name: '', path: '/', current: true},
     {name: 'Transaction', path: '/transactions', current: false},
     {name: 'Counter', path: '/counter', current: false},
-    {name: 'NFTs', path: '/nft', current: false},
+    {name: 'NFTs', path: '/mint-nft', current: false},
 ]
 
