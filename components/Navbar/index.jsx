@@ -5,18 +5,33 @@ import {MenuIcon, XIcon, LinkIcon} from "@heroicons/react/outline";
 import {routes} from "../../helpers/constants";
 import {useRouter} from "next/router";
 import {MailIcon} from '@heroicons/react/solid'
-import {useMoralis} from "react-moralis";
+import {useChain, useMoralis} from "react-moralis";
 import ConnectWallet from "../ConnectWallet";
-
+import {useAccount, useBalance, useDisconnect, useEnsName} from "wagmi";
+import {truncateEthAddress} from "../../helpers/utils";
+import UserBlockies from "../Blockies";
+import { useConnect } from 'wagmi'
+import { useNetwork } from 'wagmi'
+import { useEnsAvatar } from 'wagmi'
+import Chains from "../Chains";
+import Balance from "../Balance";
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
 const Navbar = () => {
     const router = useRouter()
-    // const { switchNetwork, chainId, chain, account } = useChain();
-    // console.log({chainId, chain, account })
-    const {authenticate, isAuthenticated, user} = useMoralis();
+    const { connector: activeConnector, isConnected, address } = useAccount()
+    const { connect, connectors, error, isLoading, pendingConnector } =
+        useConnect()
+    const { data: ensName } = useEnsName({ address })
+
+    const { disconnect } = useDisconnect()
+    const { chain, chains } = useNetwork()
+    const { data : ensAvatar, isError } = useEnsAvatar({
+        addressOrName: address,
+    })
+
 
     return (
         <Disclosure as="nav" className="bg-white shadow">
@@ -39,7 +54,7 @@ const Navbar = () => {
                             <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                                 <div className="flex-shrink-0 flex items-center cursor-pointer"
                                      onClick={() => router.push("/")}>
-                                    <h1 className="">Ethereum Boilerplate</h1>
+                                    <p className="text-xl">Ethereum Boilerplate</p>
                                 </div>
                                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
 
@@ -52,7 +67,7 @@ const Navbar = () => {
                                                 item.current
                                                     ? 'border-indigo-500 text-gray-900'
                                                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                                                'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                                                'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium cursor-pointer'
                                             )}
                                             aria-current={item.current ? 'page' : undefined}
                                         >
@@ -63,15 +78,17 @@ const Navbar = () => {
                             </div>
                             <div
                                 className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                                {isAuthenticated ?
+                                {isConnected ?
                                     <>
-                                        <button
-                                            type="button"
-                                            className="inline-flex items-center px-4 py-2 border-2 border-gray-300 shadow-sm text-base font-medium rounded-md text-dark hover:accent-red-50 focus:outline-none"
-                                        >
-                                            <MailIcon className="-ml-1 mr-3 h-5 w-5" aria-hidden="true"/>
-                                            Polygon
-                                        </button>
+                                        {/*<button*/}
+                                        {/*    type="button"*/}
+                                        {/*    className="inline-flex items-center px-4 py-2 border-2 border-gray-300 shadow-sm text-base font-medium rounded-md text-dark hover:accent-red-50 focus:outline-none"*/}
+                                        {/*>*/}
+                                        {/*    <MailIcon className="-ml-1 mr-3 h-5 w-5" aria-hidden="true"/>*/}
+                                        {/*    {chain.name}*/}
+                                        {/*</button>*/}
+
+                                        <Chains/>
 
                                         {/* current chain */}
                                         <Menu as="div" className="ml-3 relative">
@@ -79,11 +96,7 @@ const Navbar = () => {
                                                 <Menu.Button
                                                     className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                                     <span className="sr-only">Open user menu</span>
-                                                    <img
-                                                        className="h-8 w-8 rounded-full"
-                                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                        alt=""
-                                                    />
+                                                   <UserBlockies address={address}/>
                                                 </Menu.Button>
                                             </div>
                                             <Transition
@@ -108,20 +121,23 @@ const Navbar = () => {
                                                             <div
                                                                 className="flex items-center px-4 mr-2 py-2  border-gray-500">
                                                                 <div className="flex-shrink-0">
-                                                                    <img
-                                                                        className="h-8 w-8 rounded-full"
-                                                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                                        alt=""
-                                                                    />
+                                                                    {ensAvatar ?
+                                                                        <img
+                                                                            className="h-8 w-8 rounded-full"
+                                                                            src={ensAvatar}
+                                                                            alt=""
+                                                                        />
+                                                                        : <UserBlockies address={address} />
+                                                                    }
                                                                 </div>
                                                                 <div className="ml-4 mr-6">
                                                                     <div
                                                                         className="text-base font-medium leading-6 text-gray-900">
-                                                                        JohnDoe.eth
+                                                                        {ensName}
                                                                     </div>
                                                                     <div
                                                                         className="text-base font-medium leading-6 text-gray-900">
-                                                                        afsdgfhgafwwegrwqedsafsdf
+                                                                        {truncateEthAddress(address)}
                                                                     </div>
 
 
@@ -132,18 +148,14 @@ const Navbar = () => {
 
                                                             </div>
 
-                                                            <div className={"m-4"}>
-                                                                <p className={" mt-4 text-sm"}>Balance</p>
-                                                                <p className={"text-xl"}>0.99 Matic</p>
-
-                                                                <a href={"#"} className={'mt-1 text-sm flex underline'}>   <LinkIcon className="block h-4 w-4 pt-1" aria-hidden="true"/> <p>View on explorer</p></a>
-                                                            </div>
+                                                             <Balance />
 
                                                             </div>
 
                                                             <div className={"text-center mt-3 mb-3 w-full"}>
                                                                 <button
                                                                     type="button"
+                                                                    onClick={disconnect}
                                                                     className=" w-full inline-flex items-center px-6 py-3 border border-2 border-transparent text-base font-medium rounded-md shadow-sm text-dark bg-white hover:bg-black hover:text-white border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                                 >
                                                                     Disconnect

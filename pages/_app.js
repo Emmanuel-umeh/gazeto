@@ -7,6 +7,8 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 import Navbar from "../components/Navbar";
 import { MoralisProvider } from "react-moralis";
+import {useEffect} from "react";
+import Moralis from "moralis";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [chain.polygonMumbai],

@@ -1,13 +1,16 @@
 import {useContractWrite, usePrepareContractWrite} from 'wagmi'
 import {contractAddress} from "../../helpers/constants";
-import * as contractAbi from "../../contracts/abi";
+import CounterAbi from "../../contracts/abi/counter.json";
 
-export const useContractWrite =(functionName) =>{
-    const { config } = usePrepareContractWrite({
+export const useContractSend =(functionName) =>{
+    const { config, ...rest } = usePrepareContractWrite({
         addressOrName: contractAddress,
-        contractInterface: contractAbi,
+        contractInterface: CounterAbi,
         functionName,
+        onError : (err) => {
+            console.log({err})
+        }
     })
-    const { data, isLoading, isSuccess, write } = useContractWrite(config)
+    const { data, isLoading, isSuccess, write, writeAsync, error } = useContractWrite(config)
     return {data, isLoading, isSuccess, write}
 }

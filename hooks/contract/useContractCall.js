@@ -1,13 +1,18 @@
-import { useContractRead } from 'wagmi'
+import {useContractRead, useNetwork} from 'wagmi'
 import {contractAddress} from "../../helpers/constants";
-import * as contractAbi from "../../contracts/abi";
+import CounterAbi from "../../contracts/abi/counter.json";
 
+// read from smart contract
 export const useContractCall =(functionName) =>{
-    const { data, isError, isLoading } = useContractRead({
+    const resp = useContractRead({
         addressOrName: contractAddress,
-        contractInterface: contractAbi,
+        contractInterface: CounterAbi,
         functionName: functionName,
+        onError : (err) => {
+            console.log({err})
+        }
     })
 
-    return {data, isError, isLoading}
+    return resp
 }
+

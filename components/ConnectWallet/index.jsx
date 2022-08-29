@@ -5,24 +5,24 @@ import Image from 'next/image'
 import {connectors} from "./connectors";
 import {useMoralis} from "react-moralis";
 import Spinner from "../Spinner";
+import {useAccount, useConnect} from "wagmi";
+import {InjectedConnector} from "wagmi/connectors/injected";
 
 
 const ConnectWallet = () => {
     const [open, setOpen] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const {authenticate, isAuthenticated, account, chainId, logout} = useMoralis()
-    console.log({account, isAuthenticated});
+    const {connect, connectors, error, isLoading, pendingConnector } = useConnect({
+        connector: new InjectedConnector(),
+    })
 
-    const connectToWallet = async ({connectorId}) => {
+    const {address, isConnected} = useAccount()
+
+
+    const connectToWallet = async ({connector}) => {
         try {
-            setLoading(true)
-            await authenticate({provider: connectorId});
-            window.localStorage.setItem("connectorId", connectorId);
-            setOpen(false)
+            await connect({connector});
         } catch (e) {
             console.error(e);
-        } finally {
-            setLoading(false)
         }
     }
 
@@ -63,7 +63,7 @@ const ConnectWallet = () => {
                                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                             >
-                                {loading ?
+                                {isLoading ?
                                     <Dialog.Panel
                                         className="relative bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-sm sm:w-full sm:p-6">
                                         <div>
@@ -92,16 +92,26 @@ const ConnectWallet = () => {
                                                     Connect Wallet
                                                 </Dialog.Title>
                                                 <div>
-                                                    {connectors.map(({title, icon, connectorId}, key) => (
+                                                    {connectors.map((connector, key) => (
 
                                                         <button
                                                             type="button"
                                                             key={key}
                                                             className="w-full mt-5 inline-flex justify-between border border-gray-300 items-center px-4 py-2 border border-transparent shadow-sm text-base font-medium rounded-md text-dark hover:bg-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                                            onClick={() => connectToWallet({connectorId})}
+                                                            onClick={() => connectToWallet({connector})}
                                                         >
-                                                            {title}
-                                                            <Image width={30} height={30} src={icon} alt={title}/>
+
+                                                            {isLoading &&
+                                                            pendingConnector?.id === connector.id ?
+                                                                <div className={'border-2 w-full'}>
+                                                                    <Spinner loading={true} color={"black"}/>
+                                                                </div> :
+                                                                <>
+                                                                    {connector.name}
+                                                                    <Image width={30} height={30} src={"/assets/WalletIcons/" + connector.id + ".png"}
+                                                                           alt={connector.name}/></>
+                                                            }
+
                                                         </button>
                                                     ))}
                                                 </div>

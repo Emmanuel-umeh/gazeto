@@ -5,9 +5,6 @@ import {useEffect, useState} from "react";
 import {
     useAccount,
     useConnect,
-    useDisconnect,
-    useEnsAvatar,
-    useEnsName,
 } from "wagmi";
 import {Dialog} from '@headlessui/react'
 import styles from "../styles/Home.module.css";

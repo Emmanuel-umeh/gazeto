@@ -2,17 +2,15 @@ import Blockies from 'react-blockies';
 import Spinner from "../Spinner";
 import {useAccount} from "wagmi";
 
-const UserBlockies = ({size}) => {
+const UserBlockies = ({size, userAddress}) => {
     const { address } = useAccount()
     if (!address) return <Spinner loading={true} />;
     return (
         <Blockies
-            seed={address}
+            seed={userAddress || address}
             size={size || 10}
             scale={3}
-            color="#dfe"
-            bgColor="#ffe"
-            spotColor="#abc"
+            bgColor="#fff"
             className="identicon"
         />
     )
