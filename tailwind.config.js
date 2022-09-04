@@ -5,6 +5,10 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      // Add your custom fonts and enjoy.
+      'Patrick': ["Patrick Hand", "cursive"]
+    },
     extend: {},
   },
   plugins: [],
