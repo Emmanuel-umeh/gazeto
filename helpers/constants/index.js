@@ -1,4 +1,5 @@
-export const contractAddress = "0x13Cf24E2fC62866182D1F945f0F6F16CeBE74781"
+export const contractAddress = "0x9d838Dc9d8c0C167F41Cfae35772257D1F58DCf5"
+export const nftContractAddress = "0x1E1C0b403AaCD953F932d961A700c372ABB328af"
 
 export const routes = [
     {name: '', path: '/', current: true},

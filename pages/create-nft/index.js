@@ -1,10 +1,49 @@
 import {useState} from "react";
 import {useAccount, useBalance, useNetwork} from "wagmi";
+import {uploadFileToWebStorage} from "../../helpers/nft";
 
 const MintNft = () => {
-    const [fileUrl, setFileUrl] = useState(null);
+    const [ipfsImage, setIpfsImage] = useState("");
+    const [nftName, setNftName] = useState("");
+    const [nftDescription, setNftDescription] = useState("");
     const {address} = useAccount()
     const {chain} =  useNetwork()
+
+    // check if all form data has been filled
+    const isFormFilled = () =>
+        nftName && ipfsImage && nftDescription
+
+    export const createNft = async (
+        {name, description, ipfsImage, ownerAddress}
+    ) => {
+            if (!name || !description || !ipfsImage) return;
+            // convert NFT metadata to JSON format
+            const data = JSON.stringify({
+                name,
+                description,
+                image: ipfsImage,
+                owner: address,
+            });
+
+            try {
+
+                // save NFT metadata to IPFS
+                // const added = await client.add(data);
+                //
+                // // IPFS url for uploaded metadata
+                // const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+                //
+                // // mint the NFT and save the IPFS url to the blockchain
+                // let transaction = await minterContract.methods
+                //     .safeMint(ownerAddress, url)
+                //     .send({from: defaultAccount});
+                //
+                // return transaction;
+            } catch (error) {
+                console.log("Error uploading file: ", error);
+            }
+    };
+
     return (
         <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
 
@@ -18,10 +57,13 @@ const MintNft = () => {
                             </label>
                             <div className="mt-1">
                                 <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
+                                    id="text"
+                                    name="name"
+                                    type="text"
+                                    onChange={(e) => {
+                                        setNftName(e.target.value)
+                                    }}
+                                    autoComplete="name"
                                     required
                                     className="appearance-none block w-full px-3 py-2 border border-2 border-black rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 />
@@ -36,6 +78,9 @@ const MintNft = () => {
                                 <textarea
                                     id="text"
                                     name="text"
+                                    onChange={(e) => {
+                                        setNftDescription(e.target.value)
+                                    }}
                                     rows={5}
                                     required
                                     className="appearance-none block w-full px-3 py-2 border border-2 border-black rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -45,20 +90,20 @@ const MintNft = () => {
 
 
 
-                        {/*<div>*/}
-                        {/*    <label htmlFor="email" className="block text-lg font-medium text-gray-700">*/}
-                        {/*        Attach file*/}
-                        {/*    </label>*/}
-                        {/*    <div className="mt-1">*/}
-                        {/*        <textarea*/}
-                        {/*            id="text"*/}
-                        {/*            name="text"*/}
-                        {/*            rows={5}*/}
-                        {/*            required*/}
-                        {/*            className="appearance-none block w-full px-3 py-2 border border-2 border-black rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"*/}
-                        {/*        />*/}
-                        {/*    </div>*/}
-                        {/*</div>*/}
+                        <div>
+                            <label htmlFor="email" className="block text-lg font-medium text-gray-700">
+                                Attach file
+                            </label>
+                            <div className="mt-1">
+                                <textarea
+                                    id="text"
+                                    name="text"
+                                    rows={5}
+                                    required
+                                    className="appearance-none block w-full px-3 py-2 border border-2 border-black rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                />
+                            </div>
+                        </div>
                         <div className="mt-6">
                             <label className="block text-sm font-medium text-gray-700">
                                 Cover photo
@@ -95,7 +140,14 @@ const MintNft = () => {
                                                 name="file-upload"
                                                 type="file"
                                                 className="sr-only"
-                                                // onChange={uploadImage}
+                                                onChange={ async (e)=>{
+                                                    const imageUrl = await uploadFileToWebStorage(e)
+                                                    if (!imageUrl) {
+                                                        alert("failed to upload image");
+                                                        return;
+                                                    }
+                                                    setIpfsImage(imageUrl);
+                                                }}
                                             />
                                         </label>
                                         <p className="pl-1">attach your file here</p>
