@@ -2,12 +2,13 @@ import {useContractWrite, usePrepareContractWrite, useWaitForTransaction} from '
 import {contractAddress, nftContractAddress} from "../../helpers/constants";
 import CounterAbi from "../../contracts/abi/counter.json";
 
-export const useContractSend =(functionName) =>{
+export const useContractSend =(functionName, args) =>{
     const { config, ...rest } = usePrepareContractWrite({
         addressOrName: contractAddress,
         contractInterface: CounterAbi,
         chainId: 80001,
         functionName,
+        args,
         onError : (err) => {
             console.log({err})
         }

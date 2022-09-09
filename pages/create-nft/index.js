@@ -1,11 +1,13 @@
 import {useState} from "react";
 import {useAccount, useBalance, useNetwork} from "wagmi";
-import {uploadFileToWebStorage} from "../../helpers/nft";
+import {uploadFileToWebStorage, uploadContentToWeb3Storage} from "../../helpers/nft";
+import {useContractSend} from "../../hooks/contract/useContractWrite";
 
 const MintNft = () => {
     const [ipfsImage, setIpfsImage] = useState("");
     const [nftName, setNftName] = useState("");
     const [nftDescription, setNftDescription] = useState("");
+    const [nftCategory, setNftCategory] = useState("");
     const {address} = useAccount()
     const {chain} =  useNetwork()
 
@@ -13,34 +15,24 @@ const MintNft = () => {
     const isFormFilled = () =>
         nftName && ipfsImage && nftDescription
 
-    const createNft = async (
-        {name, description, ipfsImage, ownerAddress}
-    ) => {
-            if (!name || !description || !ipfsImage) return;
+    const createNft = async () => {
+            if (!nftName || !nftDescription || !ipfsImage ||!nftCategory) return;
             // convert NFT metadata to JSON format
             const data = JSON.stringify({
-                name,
-                description,
+                name : nftName ,
+                description : nftDescription,
                 image: ipfsImage,
+                category: nftCategory,
                 owner: address,
             });
 
             try {
-
-                // save NFT metadata to IPFS
-                // const added = await client.add(data);
-                //
-                // // IPFS url for uploaded metadata
-                // const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-                //
-                // // mint the NFT and save the IPFS url to the blockchain
-                // let transaction = await minterContract.methods
-                //     .safeMint(ownerAddress, url)
-                //     .send({from: defaultAccount});
-                //
-                // return transaction;
+                const ipfsUrl = uploadContentToWeb3Storage(data)
+                console.log({ipfsUrl})
+                const args = [address, ipfsUrl]
+                // const {write: mintNft, isSuccess : mintSuccess, isLoading: mintLoading} = useContractSend('safeMint', args)
             } catch (error) {
-                console.log("Error uploading file: ", error);
+                console.log("Error minting nft" , error);
             }
     };
 
@@ -53,7 +45,7 @@ const MintNft = () => {
                     <form className="space-y-6" action="#" method="POST">
                         <div>
                             <label htmlFor="email" className="block text-lg font-medium text-gray-700">
-                                Name
+                                Title
                             </label>
                             <div className="mt-1">
                                 <input
@@ -72,7 +64,7 @@ const MintNft = () => {
 
                         <div>
                             <label htmlFor="email" className="block text-lg font-medium text-gray-700">
-                                Description
+                                Write article content
                             </label>
                             <div className="mt-1">
                                 <textarea
@@ -92,18 +84,23 @@ const MintNft = () => {
 
                         <div>
                             <label htmlFor="email" className="block text-lg font-medium text-gray-700">
-                                Attach file
+                                Categories
                             </label>
                             <div className="mt-1">
-                                <textarea
+                                <input
                                     id="text"
-                                    name="text"
-                                    rows={5}
+                                    name="name"
+                                    type="text"
+                                    onChange={(e) => {
+                                        setNftCategory(e.target.value)
+                                    }}
+                                    autoComplete="name"
                                     required
                                     className="appearance-none block w-full px-3 py-2 border border-2 border-black rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 />
                             </div>
                         </div>
+
                         <div className="mt-6">
                             <label className="block text-sm font-medium text-gray-700">
                                 Cover photo
@@ -158,10 +155,11 @@ const MintNft = () => {
 
                         <div>
                             <button
-                                type="submit"
+                                disabled={!isFormFilled}
+                                onClick={createNft}
                                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-black hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:bg-gray-400"
                             >
-                                Mint {chain?.name ? 'on '+ chain.name : ''}
+                           Save and mint article
                             </button>
                         </div>
                     </form>
