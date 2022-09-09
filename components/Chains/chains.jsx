@@ -172,8 +172,8 @@ function Chains() {
                                                     'group flex items-center px-4 py-2 text-sm'
                                                 )}
                                             >
-                                                <Image height={40} width={40}
-                                                       className=" mr-5 h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                                                <Image height={32} width={32}
+                                                       className=" mr-5 h-5 w-4 text-gray-400 group-hover:text-gray-500"
                                                        src={item.icon}/>
                                                 <span className={"ml-3"}> {item.value}</span>
                                             </a>

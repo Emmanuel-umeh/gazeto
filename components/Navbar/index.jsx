@@ -1,20 +1,22 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment} from "react";
-import {Disclosure, Menu, Transition} from "@headlessui/react";
-import {MenuIcon, XIcon, LinkIcon} from "@heroicons/react/outline";
-import {routes} from "../../helpers/constants";
-import {useRouter} from "next/router";
-import {MailIcon} from '@heroicons/react/solid'
-import {useChain, useMoralis} from "react-moralis";
+import { Fragment } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { MenuIcon, XIcon, LinkIcon } from "@heroicons/react/outline";
+import { routes } from "../../helpers/constants";
+import { useRouter } from "next/router";
+import { MailIcon } from '@heroicons/react/solid'
+import { useChain, useMoralis } from "react-moralis";
 import ConnectWallet from "../ConnectWallet";
-import {useAccount, useBalance, useDisconnect, useEnsName} from "wagmi";
-import {truncateEthAddress} from "../../helpers/utils";
+import { useAccount, useBalance, useDisconnect, useEnsName } from "wagmi";
+import { truncateEthAddress } from "../../helpers/utils";
 import UserBlockies from "../Blockies";
 import { useConnect } from 'wagmi'
 import { useNetwork } from 'wagmi'
 import { useEnsAvatar } from 'wagmi'
 import Chains from "../Chains";
 import Balance from "../Balance";
+// import Image from 'next/image';
+import logo from "../../public/assets/images/gazeto.svg"
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
@@ -28,14 +30,14 @@ const Navbar = () => {
 
     const { disconnect } = useDisconnect()
     const { chain, chains } = useNetwork()
-    const { data : ensAvatar, isError } = useEnsAvatar({
+    const { data: ensAvatar, isError } = useEnsAvatar({
         addressOrName: address,
     })
-
+    console.log('logo', logo.src)
 
     return (
-        <Disclosure as="nav" className="bg-white shadow">
-            {({open}) => (
+        <Disclosure as="nav" className="sticky top-0 z-50  bg-white shadow w-full">
+            {({ open }) => (
                 <>
                     <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                         <div className="relative flex justify-between h-16">
@@ -45,19 +47,19 @@ const Navbar = () => {
                                     className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                                     <span className="sr-only">Open main menu</span>
                                     {open ? (
-                                        <XIcon className="block h-6 w-6" aria-hidden="true"/>
+                                        <XIcon className="block h-6 w-6" aria-hidden="true" />
                                     ) : (
-                                        <MenuIcon className="block h-6 w-6" aria-hidden="true"/>
+                                        <MenuIcon className="block h-6 w-6" aria-hidden="true" />
                                     )}
                                 </Disclosure.Button>
                             </div>
                             <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                                 <div className="flex-shrink-0 flex items-center cursor-pointer"
-                                     onClick={() => router.push("/")}>
-                                    <p className="text-xl">Ethereum Boilerplate</p>
+                                    onClick={() => router.push("/")}>
+                                    <img className='h-10' src={logo.src} alt="Gazeto" />
+                                    {/* <Image className='w-4' src={logo} layout='responsive' /> */}
                                 </div>
                                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-
                                     {routes.filter(x => x.name).map((item) => (
                                         <a
                                             key={item.name}
@@ -88,7 +90,7 @@ const Navbar = () => {
                                         {/*    {chain.name}*/}
                                         {/*</button>*/}
 
-                                        <Chains/>
+                                        <Chains />
 
                                         {/* current chain */}
                                         <Menu as="div" className="ml-3 relative">
@@ -96,7 +98,7 @@ const Navbar = () => {
                                                 <Menu.Button
                                                     className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                                     <span className="sr-only">Open user menu</span>
-                                                   <UserBlockies address={address}/>
+                                                    <UserBlockies address={address} />
                                                 </Menu.Button>
                                             </div>
                                             <Transition
@@ -110,45 +112,45 @@ const Navbar = () => {
                                             >
                                                 <Menu.Items
                                                     className="z-10 bg-white origin-top-right absolute right-0 mt-2 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none p-5" style={{
-                                                        width : '30vw'
-                                                }}>
+                                                        width: '30vw'
+                                                    }}>
                                                     <Menu.Item>
 
                                                         <div>
                                                             <p className={'text-3xl m-5'}>Account</p>
 
-                                                            <div className={"border border-1 divide-y" }>
-                                                            <div
-                                                                className="flex items-center px-4 mr-2 py-2  border-gray-500">
-                                                                <div className="flex-shrink-0">
-                                                                    {ensAvatar ?
-                                                                        <img
-                                                                            className="h-8 w-8 rounded-full"
-                                                                            src={ensAvatar}
-                                                                            alt=""
-                                                                        />
-                                                                        : <UserBlockies address={address} />
-                                                                    }
-                                                                </div>
-                                                                <div className="ml-4 mr-6">
-                                                                    <div
-                                                                        className="text-base font-medium leading-6 text-gray-900">
-                                                                        {ensName}
+                                                            <div className={"border border-1 divide-y"}>
+                                                                <div
+                                                                    className="flex items-center px-4 mr-2 py-2  border-gray-500">
+                                                                    <div className="flex-shrink-0">
+                                                                        {ensAvatar ?
+                                                                            <img
+                                                                                className="h-8 w-8 rounded-full"
+                                                                                src={ensAvatar}
+                                                                                alt=""
+                                                                            />
+                                                                            : <UserBlockies address={address} />
+                                                                        }
                                                                     </div>
-                                                                    <div
-                                                                        className="text-base font-medium leading-6 text-gray-900">
-                                                                        {truncateEthAddress(address)}
+                                                                    <div className="ml-4 mr-6">
+                                                                        <div
+                                                                            className="text-base font-medium leading-6 text-gray-900">
+                                                                            {ensName}
+                                                                        </div>
+                                                                        <div
+                                                                            className="text-base font-medium leading-6 text-gray-900">
+                                                                            {truncateEthAddress(address)}
+                                                                        </div>
+
+
                                                                     </div>
+
+                                                                    <div className={'divide-x '} />
 
 
                                                                 </div>
 
-                                                                <div className={'divide-x '} />
-
-
-                                                            </div>
-
-                                                             <Balance />
+                                                                <Balance />
 
                                                             </div>
 
@@ -172,7 +174,7 @@ const Navbar = () => {
 
                                     </>
                                     :
-                                    <ConnectWallet/>}
+                                    <ConnectWallet />}
 
 
                             </div>

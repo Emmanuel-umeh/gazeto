@@ -104,10 +104,9 @@ export default function Home() {
                         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 flex">
                             {/* Replace with your content */}
                             <div className="px-4 py-8 mt-40 sm:px-0 w-1/2">
-                                <h1 className="text-3xl tracking-tight font-bold leading-tight text-gray-900 text-6xl">Develop Web3 dApps Just Got Easy!</h1>
+                                <h1 className="text-3xl tracking-tight font-bold leading-tight text-gray-900 text-6xl">Make money from your audience</h1>
                                 <p className="mt-4 max-w-md text-base leading-6 text-gray-500 text-xl">
-                                    The World’s Leading infrastructure and tools for creating, deploying and extending decentralized
-                                    applications on Ethereum.
+                                    Monetize your content by charging your most loyal readers and reward them loyalty points and by granting them access to your pre-releases &amp; sneak-peaks.
                                 </p>
                                 <div className={"mt-5"}>
                                     <ConnectWallet />
