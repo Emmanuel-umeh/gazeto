@@ -1,10 +1,8 @@
-import { useNFTBalances } from 'react-moralis';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import Moralis from 'moralis';
 import { useAccount, useEnsName, useNetwork } from 'wagmi';
 import SearchBar from '../../components/SearchBar';
 import ArticleCard from '../../components/ArticleCard';
+import {useContractCall} from "../../hooks/contract/useContractCall";
 
 const articles = [
   {
@@ -40,23 +38,10 @@ const articles = [
 ];
 
 const NftExplorer = () => {
-  const { address } = useAccount();
-  const router = useRouter();
-
-  const [nftBalances, setNftBalances] = useState([]);
-  const { data: ensName } = useEnsName({ address });
-
-  const { chain } = useNetwork();
 
   const fetchNfts = async () => {
     try {
-      await Moralis.start({ apiKey: process.env.NEXT_PUBLIC_MORALIS_API_KEY });
 
-      const balances = await Moralis.EvmApi.account.getNFTs({
-        address: address,
-        chain: chain.id,
-      });
-      setNftBalances(balances?.result);
     } catch (e) {
       console.log({ e });
     }
@@ -68,7 +53,7 @@ const NftExplorer = () => {
 
   return (
     <div>
-      <main className='min-h-full flex-col  items-center justify-center  mt-20 max-w-3xl mx-auto sm:px-6 lg:px-8'>
+      <main className='min-h-full flex-col items-center justify-center  mt-20 max-w-3xl mx-auto sm:px-6 lg:px-8'>
         <SearchBar />
         {articles.length ? (
           <>
