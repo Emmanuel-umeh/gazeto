@@ -41,7 +41,7 @@ const MintNft = () => {
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 shadow shadow-2xl sm:rounded-lg sm:px-10">
-                    <p className={"text-3xl mb-4"}>Create NFT</p>
+                    <p className={"text-3xl font- mb-4"}>Create NFT</p>
                     <form className="space-y-6" action="#" method="POST">
                         <div>
                             <label htmlFor="email" className="block text-lg font-medium text-gray-700">
