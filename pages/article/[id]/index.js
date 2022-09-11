@@ -91,7 +91,7 @@ export default function PostPage() {
   //   </div>
   // );
   console.log({article})
-  
+
   useEffect(() => {
     getMarkdown()
   }, [article])
@@ -113,8 +113,8 @@ export default function PostPage() {
       console.log({e})
 
     }
-  } 
-  
+  }
+
   if(!article){
     return <></>
   }
@@ -131,7 +131,6 @@ export default function PostPage() {
               width={1310}
               height={873}
             />
-            <figcaption>Sagittis scelerisque nulla cursus in enim consectetur quam.</figcaption>
           </figure>
           <div className="prose">
             <ReactMarkdown>{content}</ReactMarkdown>

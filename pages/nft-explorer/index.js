@@ -66,7 +66,7 @@ const NftExplorer = () => {
     <div>
       <main className='min-h-full flex-col items-center justify-center  mt-20 max-w-3xl mx-auto sm:px-6 lg:px-8'>
         <SearchBar />
-        {articles.length ? (
+        {articles?.length ? (
           <>
             <div className=''>
               {elements}

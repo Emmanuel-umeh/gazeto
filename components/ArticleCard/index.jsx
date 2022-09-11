@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import Spinner from "../Spinner";
 import {fetchNftMeta} from "../../helpers/nft";
 import {truncateEthAddress} from "../../helpers/utils";
+import {useRouter} from "next/router";
 
 const ArticleCard = ({ id }) => {
   const [article, setArticle] = useState(null);
@@ -10,6 +11,7 @@ const ArticleCard = ({ id }) => {
   useEffect(() => {
     fetchNftData()
   }, [data]);
+  const router = useRouter()
 
   const fetchNftData = async () => {
     if(!data) return
@@ -31,7 +33,9 @@ const ArticleCard = ({ id }) => {
   const metadata = article ?  article['ms-article'] : null
   return (
 
-    <div className="border border-2 border-gray-300 p-4 mt-3 rounded-lg">
+    <div className="border border-2 border-gray-300 p-4 mt-3 rounded-lg cursor-pointer" onClick={() => {
+      router.push(`article/${id}`)
+    }}>
       <div className="flex">
         <div className="mr-4 flex-shrink-0">
           <img className="h-48 w-64 object-cover rounded-lg" src={article['nms-article'][5]['enclosure-url']} alt="" />

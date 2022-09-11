@@ -15,8 +15,7 @@ const MintNft = () => {
     const [nftCategory, setNftCategory] = useState("");
     const [metadataUrl, setMetadataUrl] = useState(null);
     const [loading, setLoading] = useState(false);
-
-
+    console.log({ipfsImage})
     const {address} = useAccount()
     const { chain } = useNetwork();
 

@@ -15,5 +15,6 @@ export const useContractSend =(functionName, args) =>{
     })
 
     const { data, isSuccess, write, writeAsync, error, isLoading } = useContractWrite(config)
+    console.log({config})
     return {data, isSuccess, write, writeAsync, isLoading}
 }
