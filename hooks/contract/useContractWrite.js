@@ -15,9 +15,5 @@ export const useContractSend =(functionName, args) =>{
     })
 
     const { data, isSuccess, write, writeAsync, error, isLoading } = useContractWrite(config)
-    // const {isLoading} = useWaitForTransaction({
-    //     hash: data?.hash,
-    // })
-    console.log({write})
     return {data, isSuccess, write, writeAsync, isLoading}
 }

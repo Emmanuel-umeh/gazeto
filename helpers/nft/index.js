@@ -4,14 +4,11 @@ import axios from "axios";
 export const uploadFileToWebStorage = async (file) => {
     // Construct with token and endpoint
     const client = new Web3Storage({token: process.env.NEXT_PUBLIC_STORAGE_API_KEY})
-    console.log({file})
     if (!file) return;
     // Pack files into a CAR and send to web3.storage
     const rootCid = await client.put(file) // Promise<CIDString>
-    console.log({rootCid})
     // Fetch and verify files from web3.storage
     const res = await client.get(rootCid) // Promise<Web3Response | null>
-    console.log({res})
     const files = await res.files() // Promise<Web3File[]>
 
     return {
@@ -42,6 +39,28 @@ export const uploadContentToWeb3Storage = async (data) => {
         console.log("Error uploading file: ", error);
     }
 }
+
+// function to upload a content to IPFS via web3.storage
+export const uploadMarkdownToWebStorage = async (data) => {
+    try {
+        const client = new Web3Storage({token: process.env.NEXT_PUBLIC_STORAGE_API_KEY})
+        //use file object
+        const blob = new Blob([data], {type : 'text/markdown'})
+        const files = [new File([blob], 'content.md')]
+        const rootCid = await client.put(files)
+
+        const resx = await client.get(rootCid)
+        const filesx = await resx.files()
+        return {
+            imageUrl : `https://infura-ipfs.io/ipfs/${filesx[0].cid}`,
+            imageSize : filesx[0].size,
+            imageType : filesx[0].type
+        };
+    } catch (error) {
+        console.log("Error uploading file: ", error);
+    }
+}
+
 
 
 // get the metedata for an NFT from IPFS

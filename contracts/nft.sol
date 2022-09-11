@@ -7,73 +7,36 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract Gazeto is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
+contract MyNFT is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
 
-    constructor() ERC721("GazetoNft", "GZNFT") {}
+    constructor() ERC721("MyNFT", "MNFT") {}
 
-    struct Article {
-        uint256 tokenId;
-        address owner;
-        string uri;
-    }
-
-    mapping(uint256 => Article) private articles;
-
-    // mint an NFt
-    function safeMint(
-        string memory uri
-    ) public payable returns (uint256) {
-        require(bytes(uri).length > 0, "Enter valid uri");
+    //    mint an NFT
+    function safeMint(address to, string memory uri) public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
-        _mint(msg.sender, tokenId);
-
+        _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
-        createArticle(tokenId, uri, msg.sender);
-        return tokenId;
     }
 
-    //Create Ticket Functionality
-    function createArticle(
-        uint256 tokenId,
-        string memory uri,
-        address owner
-    ) private {
-        articles[tokenId] = Article(
-            tokenId,
-            owner,
-            uri
-        );
-    }
+    // The following functions are overrides required by Solidity.
 
-
-    function getArticle(uint256 tokenId) public view returns (Article memory) {
-        return articles[tokenId];
-    }
-
-    function getArticleLength() public view returns (uint256) {
-        return _tokenIdCounter.current();
-    }
-
-
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal override(ERC721, ERC721Enumerable) {
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
+    internal
+    override(ERC721, ERC721Enumerable)
+    {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
-    function _burn(uint256 tokenId)
-    internal
-    override(ERC721, ERC721URIStorage)
-    {
+    //    destroy an NFT
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
     }
 
+    //    return IPFS url of NFT metadata
     function tokenURI(uint256 tokenId)
     public
     view

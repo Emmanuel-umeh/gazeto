@@ -40,20 +40,11 @@ const articles = [
 
 const NftExplorer = () => {
 
-  const fetchNfts = async () => {
-    try {
-
-    } catch (e) {
-      console.log({ e });
-    }
-  };
-
-  useEffect(() => {
-    fetchNfts();
-  }, []);
   const [elements, setElements] = useState([]);
 
-  const {data : articleLength} = useContractCall("getArticleLength");
+  const args = []
+  const watch = true
+  const {data : articleLength} = useContractCall("totalSupply",args, watch);
   const renderArticles = () => {
     const length = Number(articleLength)
     if(length === 0) return null
