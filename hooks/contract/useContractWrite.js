@@ -4,7 +4,7 @@ import NftAbi from "../../contracts/abi/nft.json";
 
 export const useContractSend =(functionName, args) =>{
     const { config, ...rest } = usePrepareContractWrite({
-        addressOrName: contractAddress,
+        addressOrName: nftContractAddress,
         contractInterface: NftAbi,
         chainId: 80001,
         functionName,
@@ -14,9 +14,10 @@ export const useContractSend =(functionName, args) =>{
         }
     })
 
-    const { data, isSuccess, write, writeAsync, error } = useContractWrite(config)
-    const {isLoading} = useWaitForTransaction({
-        hash: data?.hash,
-    })
-    return {data, isLoading, isSuccess, write, writeAsync}
+    const { data, isSuccess, write, writeAsync, error, isLoading } = useContractWrite(config)
+    // const {isLoading} = useWaitForTransaction({
+    //     hash: data?.hash,
+    // })
+    console.log({write})
+    return {data, isSuccess, write, writeAsync, isLoading}
 }

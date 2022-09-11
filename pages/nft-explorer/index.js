@@ -3,6 +3,7 @@ import { useAccount, useEnsName, useNetwork } from 'wagmi';
 import SearchBar from '../../components/SearchBar';
 import ArticleCard from '../../components/ArticleCard';
 import {useContractCall} from "../../hooks/contract/useContractCall";
+import NftCard from "../../components/Nft";
 
 const articles = [
   {
@@ -50,6 +51,25 @@ const NftExplorer = () => {
   useEffect(() => {
     fetchNfts();
   }, []);
+  const [elements, setElements] = useState([]);
+
+  const {data : articleLength} = useContractCall("getArticleLength");
+  const renderArticles = () => {
+    const length = Number(articleLength)
+    if(length === 0) return null
+    const elem = []
+    for (let i = 0; i < length; i++) {
+     elem.push(
+          <ArticleCard key={i} id={i}/>
+     )
+      setElements(elem)
+
+    }
+  }
+
+  useEffect(() => {
+    renderArticles()
+  }, [articleLength]);
 
   return (
     <div>
@@ -58,9 +78,7 @@ const NftExplorer = () => {
         {articles.length ? (
           <>
             <div className=''>
-              {articles.map((article) => (
-                <ArticleCard article={article} key={article.id}/>
-              ))}
+              {elements}
             </div>
           </>
         ) : (
