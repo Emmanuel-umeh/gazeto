@@ -6,17 +6,17 @@ import {truncateEthAddress} from "../../helpers/utils";
 
 const ArticleCard = ({ id }) => {
   const [article, setArticle] = useState(null);
-  const {data, isLoading, isFetched} = useContractCall("getArticle", [id.toString()], false);
+  const {data, isLoading, isFetched} = useContractCall("tokenURI", [id.toString()], false);
   useEffect(() => {
     fetchNftData()
   }, [data]);
 
   const fetchNftData = async () => {
     if(!data) return
-    const {uri} = data
-    const resp = await fetchNftMeta(uri)
+    const resp = await fetchNftMeta(data)
     setArticle(resp?.data)
   }
+
 
   if(!isFetched || !article){
     return(

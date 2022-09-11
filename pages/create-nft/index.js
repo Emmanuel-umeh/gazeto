@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useAccount, useBalance, useNetwork} from "wagmi";
-import {uploadFileToWebStorage, uploadContentToWeb3Storage} from "../../helpers/nft";
+import {uploadFileToWebStorage, uploadContentToWeb3Storage, uploadMarkdownToWebStorage} from "../../helpers/nft";
 import {useContractSend} from "../../hooks/contract/useContractWrite";
 import Spinner from "../../components/Spinner";
 import { ToastContainer, toast } from 'react-toastify';
@@ -21,7 +21,7 @@ const MintNft = () => {
     const { chain } = useNetwork();
 
 
-    const {writeAsync: mintNft, isSuccess : mintSuccess, isLoading: mintLoading} = useContractSend('safeMint', [metadataUrl?.imageUrl])
+    const {writeAsync: mintNft, isSuccess : mintSuccess, isLoading: mintLoading} = useContractSend('safeMint', [address, metadataUrl?.imageUrl])
 
     useEffect(() => {
         if(mintNft){
@@ -69,7 +69,7 @@ const MintNft = () => {
             if (!nftName || !nftDescription || !ipfsImage.imageUrl || !nftCategory || !nftContent) return;
 
 
-            const ipfsArticleContent = await uploadContentToWeb3Storage(nftContent)
+            const ipfsArticleContent = await uploadMarkdownToWebStorage(nftContent)
             // convert NFT metadata to JSON format
             const data = {
                 name: nftName,

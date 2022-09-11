@@ -32,8 +32,6 @@ const SingleNft = () => {
     }
   };
 
-  console.log({nftBalances})
-
   useEffect(() => {
     if (!address) return;
     fetchNfts();
