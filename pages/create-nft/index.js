@@ -4,6 +4,8 @@ import {uploadFileToWebStorage, uploadContentToWeb3Storage, uploadMarkdownToWebS
 import {useContractSend} from "../../hooks/contract/useContractWrite";
 import Spinner from "../../components/Spinner";
 import { ToastContainer, toast } from 'react-toastify';
+import ConnectWallet from "../../components/ConnectWallet";
+import {useRouter} from "next/router";
 
 const MintNft = () => {
     const [ipfsImage, setIpfsImage] = useState({
@@ -15,10 +17,11 @@ const MintNft = () => {
     const [nftCategory, setNftCategory] = useState("");
     const [metadataUrl, setMetadataUrl] = useState(null);
     const [loading, setLoading] = useState(false);
-    console.log({ipfsImage})
+    const [connectWallet, setConnectWallet] = useState(false);
+
     const {address} = useAccount()
     const { chain } = useNetwork();
-
+    const router = useRouter()
 
     const {writeAsync: mintNft, isSuccess : mintSuccess, isLoading: mintLoading} = useContractSend('safeMint', [address, metadataUrl?.imageUrl])
 
@@ -40,7 +43,11 @@ const MintNft = () => {
                 draggable: true,
                 progress: undefined,
             })
+            setTimeout(()=>{
+                router.push('nft-explorer')
+            }, 1500)
         }catch (e) {
+            console.log({e})
             toast.warn("Something went wrong. Please try again.",{
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -64,6 +71,9 @@ const MintNft = () => {
         try {
             e.preventDefault()
             setLoading(true)
+            if(!address){
+                setConnectWallet(true)
+            }
             const {imageUrl, imageSize, imageType} = ipfsImage
             if (!nftName || !nftDescription || !ipfsImage.imageUrl || !nftCategory || !nftContent) return;
 
@@ -82,7 +92,7 @@ const MintNft = () => {
                     {category: nftCategory},
                     {"enclosure-url": imageUrl, length: imageSize, type:imageType},
                     {pubDate: new Date()},
-                    {blockchain: chain.name},
+                    {blockchain: chain?.name},
                     {"guid": "xyz"},
                     {"editions": "1"},
                     {"edition": "1"}
@@ -110,6 +120,7 @@ const MintNft = () => {
     return (
         <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
             <ToastContainer />
+            <ConnectWallet autoPopup={connectWallet} isMintNft={true} />
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-4 shadow shadow-2xl sm:rounded-lg sm:px-10">
                     <p className={"text-3xl font- mb-4"}>Create NFT</p>
@@ -209,7 +220,7 @@ const MintNft = () => {
 
                         <div className="mt-6">
                             <label className="block text-sm font-medium text-gray-700">
-                                Cover photo
+                                Cover photo (Maximum 500kb)
                             </label>
                             {ipfsImage?.imageUrl && (
                                 <div className={'flex flex-row justify-center'}>

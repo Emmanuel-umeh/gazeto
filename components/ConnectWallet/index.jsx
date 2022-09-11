@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import {Fragment, useState} from 'react'
+import {Fragment, useEffect, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import Image from 'next/image'
 import {connectors} from "./connectors";
@@ -9,9 +9,9 @@ import {useAccount, useConnect} from "wagmi";
 import {InjectedConnector} from "wagmi/connectors/injected";
 
 
-const ConnectWallet = () => {
+const ConnectWallet = ({autoPopup, isMintNft}) => {
     const [open, setOpen] = useState(false)
-    const {connect, connectors, error, isLoading, pendingConnector } = useConnect({
+    const {connect, connectors, error, isLoading, pendingConnector} = useConnect({
         connector: new InjectedConnector(),
     })
 
@@ -21,20 +21,29 @@ const ConnectWallet = () => {
     const connectToWallet = async ({connector}) => {
         try {
             await connect({connector});
+            setOpen(false)
         } catch (e) {
             console.error(e);
         }
     }
 
+    useEffect(() => {
+        if (autoPopup) {
+            setOpen(true)
+        }
+    }, [autoPopup]);
+
+
     return (
         <>
-            <button
+            {!isMintNft && <button
                 type="button"
                 onClick={() => setOpen(true)}
                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
                 Connect Wallet
-            </button>
+            </button>}
+
 
             {/*  Connect wallet modal  */}
             <Transition.Root show={open} as={Fragment}>

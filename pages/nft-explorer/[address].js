@@ -13,11 +13,6 @@ const SingleNft = () => {
   const { chain } = useNetwork();
 
   const [nftBalances, setNftBalances] = useState([]);
-  const { data: ensName } = useEnsName({ address });
-  const { data: ensAvatar, isError } = useEnsAvatar({
-    addressOrName: address,
-  });
-
   const fetchNfts = async () => {
     try {
       await Moralis.start({ apiKey: process.env.NEXT_PUBLIC_MORALIS_API_KEY });
@@ -26,7 +21,10 @@ const SingleNft = () => {
         address: address,
         chain: chain.id,
       });
-      setNftBalances(balances?.result);
+      const results  = balances?.result?.filter((nft)=>{
+        return typeof nft.result?.metadata?.['nms-article'] === 'object'
+      })
+      setNftBalances(results);
     } catch (e) {
       console.log({ e });
     }

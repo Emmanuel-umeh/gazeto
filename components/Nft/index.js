@@ -1,11 +1,14 @@
 import {truncateEthAddress} from "../../helpers/utils";
+import {useRouter} from "next/router";
 
 const NftCard = ({nft, key}) => {
-
+const router = useRouter()
     if(!nft) return
     return(
         <div key={key}
-             className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+             className="flex flex-col sm:flex-row sm:items-center sm:justify-between cursor-pointer" onClick={()=>{
+                 router.push(`/article/${nft.tokenId}`)
+        }}>
             <div className="border border-2 border-black">
 
                 <div className={"border-2 border-black m-3 h-full"}>
