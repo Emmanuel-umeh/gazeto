@@ -19,7 +19,7 @@ const SingleNft = () => {
 
       const balances = await Moralis.EvmApi.account.getNFTs({
         address: address,
-        chain: chain.id,
+        chain: chain?.id || '0x13881',
       });
       const results  = balances?.result?.filter((nft)=>{
         return typeof nft.result?.metadata?.['nms-article'] === 'object'

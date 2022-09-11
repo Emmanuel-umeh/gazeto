@@ -22,7 +22,7 @@ const Transactions = () => {
             await Moralis.start({apiKey: process.env.NEXT_PUBLIC_MORALIS_API_KEY});
             const transactions = await Moralis.EvmApi.account.getTransactions({
                 address,
-                chain: chain.id,
+                chain: chain?.id,
             });
             setTransactions(transactions.result)
         } catch (e) {

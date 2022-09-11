@@ -112,7 +112,7 @@ function Chains() {
 
     useEffect(() => {
         if (!chain) return null;
-        const newSelected = menuItems.find((item) => item.id === chain.id);
+        const newSelected = menuItems.find((item) => item.id === chain?.id);
         if (!newSelected) return;
         setSelected(newSelected);
     }, [chain]);
@@ -163,12 +163,12 @@ function Chains() {
                                 // </Menu.Item>
 
                                 <div className="py-1" key={item.key} onClick={() => handleMenuClick(item.key)}>
-                                    <Menu.Item disabled={!switchNetwork || item.id === chain.id}>
+                                    <Menu.Item disabled={!switchNetwork || item.id === chain?.id}>
                                         {() => (
                                             <a
                                                 href="#"
                                                 className={classNames(
-                                                    item.id === chain.id ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                    item.id === chain?.id ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                     'group flex items-center px-4 py-2 text-sm'
                                                 )}
                                             >
