@@ -38,7 +38,7 @@ const Navbar = () => {
     <Disclosure as="nav" className="sticky top-0 z-50  bg-white shadow w-full">
       {({ open }) => (
         <>
-          <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 ">
             <div className="relative flex justify-between h-16">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button */}
@@ -53,11 +53,10 @@ const Navbar = () => {
               </div>
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div
-                  className="flex-shrink-0 flex items-center cursor-pointer"
+                  className="flex-shrink-0 flex items-center cursor-pointer hidden lg:block"
                   onClick={() => router.push("/")}
                 >
-                  <img className="h-10" src={logo.src} alt="Gazeto" />
-                  {/* <Image className='w-4' src={logo} layout='responsive' /> */}
+                  <img className="h-10 my-3" src={logo.src} alt="Gazeto" />
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                   {routes
@@ -80,7 +79,7 @@ const Navbar = () => {
                     ))}
                 </div>
               </div>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6  sm:pr-0">
                 {isConnected ? (
                   <>
                     {/*<button*/}
@@ -94,7 +93,7 @@ const Navbar = () => {
                     <Chains />
 
                     {/* current chain */}
-                    <Menu as="div" className="ml-3 relative">
+                    <Menu as="div" className="ml-3 relative ">
                       <div>
                         <Menu.Button className="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                           <span className="sr-only">Open user menu</span>
@@ -111,16 +110,16 @@ const Navbar = () => {
                         leaveTo="transform opacity-0 scale-95"
                       >
                         <Menu.Items
-                          className="z-10 bg-white origin-top-right absolute right-0 mt-2 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none p-5"
+                          className="z-10 bg-white origin-top-right absolute right-0 mt-2 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none p-5 border border-gray-300"
                           style={{
-                            width: "30vw",
+                            width: "300px",
                           }}
                         >
                           <Menu.Item>
                             <div>
-                              <p className={"text-3xl m-5"}>Account</p>
+                              <p className={"text-xl font-medium py-3"}>My Account</p>
 
-                              <div className={"border border-1 divide-y"}>
+                              <div className={"border border-2 border-gray-200 rounded-md divide-y"}>
                                 <div className="flex items-center px-4 mr-2 py-2  border-gray-500">
                                   <div className="flex-shrink-0">
                                     {ensAvatar ? (
@@ -152,7 +151,7 @@ const Navbar = () => {
                                 <button
                                   type="button"
                                   onClick={disconnect}
-                                  className=" w-full inline-flex items-center px-6 py-3 border border-2 border-transparent text-base font-medium rounded-md shadow-sm text-dark bg-white hover:bg-black hover:text-white border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                  className=" w-full inline-flex items-center px-6 py-2 bg-gray-100 border border-2 border-transparent rounded-md shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
                                   Disconnect
                                 </button>
@@ -175,7 +174,7 @@ const Navbar = () => {
               {/* Current: "bg-indigo-50  text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
               <Disclosure.Button
                 as="a"
-                href="#"
+                href="/"
                 className="bg-indigo-50  text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
               >
                 Home
