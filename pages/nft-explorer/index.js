@@ -4,6 +4,7 @@ import SearchBar from '../../components/SearchBar';
 import ArticleCard from '../../components/ArticleCard';
 import {useContractCall} from "../../hooks/contract/useContractCall";
 import NftCard from "../../components/Nft";
+import Spinner from "../../components/Spinner";
 
 const articles = [
   {
@@ -44,7 +45,7 @@ const NftExplorer = () => {
 
   const args = []
   const watch = true
-  const {data : articleLength} = useContractCall("totalSupply",args, watch);
+  const {data : articleLength, isLoading} = useContractCall("totalSupply",args, watch);
   const renderArticles = () => {
     const length = Number(articleLength)
     if(length === 0) return null
@@ -72,7 +73,12 @@ const NftExplorer = () => {
               {elements}
             </div>
           </>
-        ) : (
+        ) : isLoading ?
+            <div>
+              <Spinner color={'black'} loading={true} />
+            </div>
+            :
+            (
           <div>
             <h1 className={'p-20 text-center'}>No NFTs available</h1>
           </div>

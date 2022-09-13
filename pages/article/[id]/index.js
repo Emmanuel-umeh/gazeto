@@ -90,7 +90,6 @@ export default function PostPage() {
   //     </div>
   //   </div>
   // );
-  console.log({article})
 
   useEffect(() => {
     getMarkdown()
@@ -99,20 +98,27 @@ export default function PostPage() {
   const getMarkdown = async () => {
     try{
       if(!article || !article['nms-article']) return
-    const textToMarkdown = article['nms-article'][1]['link']
-    console.log({textToMarkdown});
+    const textToMarkdown = article['nms-article'][1]['link'];
     if (!textToMarkdown) {
-      console.log("false");
       return
     }
     const {data} = await axios.get(textToMarkdown.imageUrl)
-    console.log("this us the content ",  data)
     setContent(data.toString())
     }
     catch(e){
       console.log({e})
 
     }
+  }
+
+  if(isLoading){
+    return (
+        <div className="p-4 mt-3 rounded-lg mt-40">
+          <div className="flex justify-center align-center">
+            <Spinner size={'10vw'} color={'black'} loading={true} />
+          </div>
+        </div>
+    )
   }
 
   if(!article){
@@ -133,7 +139,14 @@ export default function PostPage() {
             />
           </figure>
           <div className="prose">
-            <ReactMarkdown>{content}</ReactMarkdown>
+            {content ?
+                <ReactMarkdown>{content}</ReactMarkdown>
+                :
+
+                <div className="flex mt-10 mb-20 justify-center align-center">
+                  <Spinner size={'10vw'} color={'black'} loading={true} />
+                </div>}
+
           </div>
         </div>
       </div>

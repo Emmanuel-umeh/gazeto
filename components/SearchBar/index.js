@@ -10,7 +10,6 @@ const SearchBar = () => {
     if (!searchAddress) {
       alert("Enter valid address");
     } else {
-      console.log(searchAddress);
       router.push(`/nft-explorer/${searchAddress}`);
     }
     //  Todo, refactor into paths

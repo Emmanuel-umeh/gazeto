@@ -5,6 +5,7 @@ import { useEnsAvatar, useEnsName, useNetwork } from "wagmi";
 import NftCard from "../../components/Nft";
 import UserInfo from "../../components/Nft/userInfo";
 import SearchBar from '../../components/SearchBar';
+import Spinner from "../../components/Spinner";
 
 const SingleNft = () => {
   const { query } = useRouter();
@@ -13,8 +14,10 @@ const SingleNft = () => {
   const { chain } = useNetwork();
 
   const [nftBalances, setNftBalances] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const fetchNfts = async () => {
     try {
+      setIsLoading(true)
       await Moralis.start({ apiKey: process.env.NEXT_PUBLIC_MORALIS_API_KEY });
 
       const balances = await Moralis.EvmApi.account.getNFTs({
@@ -27,6 +30,8 @@ const SingleNft = () => {
       setNftBalances(results);
     } catch (e) {
       console.log({ e });
+    }finally {
+      setIsLoading(false)
     }
   };
 
@@ -50,18 +55,25 @@ const SingleNft = () => {
               </div>
             </div>
 
-            <div className="mt-10 sm:mt-12 grid grid-cols-4 gap-4">
+            <div>
               {nftBalances.map((nft, index) => {
                 nft = nft.result;
                 return <NftCard nft={nft} key={index} />;
               })}
             </div>
           </>
-        ) : (
-          <div>
-            <h1 className={"p-20"}>No NFTs available</h1>
-          </div>
-        )}
+        ) : isLoading ?
+            <div className="p-4 mt-3 rounded-lg mt-40">
+              <div className="flex justify-center align-center">
+                <Spinner size={'10vw'} color={'black'} loading={true} />
+              </div>
+            </div> :
+              <div>
+                <h1 className={"p-20"}>No NFTs available</h1>
+              </div>
+
+
+        }
       </main>
     </div>
   );

@@ -19,18 +19,19 @@ const ArticleCard = ({ id }) => {
     setArticle(resp?.data)
   }
 
-
-  if(!isFetched || !article){
+  if(isLoading){
     return(
         <div className="border border-2 border-gray-300 p-4 mt-3 rounded-lg">
-          <div className="flex">
-            <Spinner />
+          <div className="flex justify-center align-center">
+            <Spinner color={'black'} loading={true} />
           </div>
         </div>
         )
   }
+  if(!article){
+    return <></>
+  }
 
-  const metadata = article ?  article['ms-article'] : null
   return (
 
     <div className="border border-2 border-gray-300 p-4 mt-3 rounded-lg cursor-pointer" onClick={() => {

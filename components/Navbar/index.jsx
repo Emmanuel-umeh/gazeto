@@ -33,7 +33,6 @@ const Navbar = () => {
   const { data: ensAvatar, isError } = useEnsAvatar({
     addressOrName: address,
   });
-  console.log("logo", logo.src);
 
   return (
     <Disclosure as="nav" className="sticky top-0 z-50  bg-white shadow w-full">
