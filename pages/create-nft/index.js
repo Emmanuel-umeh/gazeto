@@ -289,18 +289,18 @@ const MintNft = () => {
                           type='file'
                           onChange={async (e) => {
                             console.log({e})
-                            const { imageUrl, imageSize, imageType } =
-                              await uploadFileToWebStorage(e.target.files);
-                            console.log({imageUrl, imageSize, imageType})
-                            if (!imageUrl) {
-                              alert('failed to upload image');
-                              return;
-                            }
-                            setIpfsImage({
-                              imageUrl,
-                              imageSize,
-                              imageType,
-                            });
+                            // const { imageUrl, imageSize, imageType } =
+                            //   await uploadFileToWebStorage(e.target.files);
+                            // console.log({imageUrl, imageSize, imageType})
+                            // if (!imageUrl) {
+                            //   alert('failed to upload image');
+                            //   return;
+                            // }
+                            // setIpfsImage({
+                            //   imageUrl,
+                            //   imageSize,
+                            //   imageType,
+                            // });
                           }}
                         />
                       </label>
