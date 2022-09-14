@@ -5,7 +5,7 @@ import { useBalance } from "wagmi";
 import Balance from "../components/Balance";
 import Address from "../components/Address";
 
-export default function dashboard() {
+export default function Dashboard() {
   const [to, setTo] = useState("");
   const [value, setValue] = useState("");
   const router = useRouter();
