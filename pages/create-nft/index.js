@@ -279,31 +279,29 @@ const MintNft = () => {
                     </svg>
 
                     <div className='flex text-sm text-gray-600'>
-                      <label
-                        htmlFor='file-upload'
-                        className='relative cursor-pointer bg-white rounded-md font-medium text-green-600 hover:text-green-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-green-500'
-                      >
-                        <input
-                          id='file-upload'
-                          name='file-upload'
-                          type='file'
-                          onChange={async (e) => {
-                            console.log({e})
-                            // const { imageUrl, imageSize, imageType } =
-                            //   await uploadFileToWebStorage(e.target.files);
-                            // console.log({imageUrl, imageSize, imageType})
-                            // if (!imageUrl) {
-                            //   alert('failed to upload image');
-                            //   return;
-                            // }
-                            // setIpfsImage({
-                            //   imageUrl,
-                            //   imageSize,
-                            //   imageType,
-                            // });
-                          }}
-                        />
-                      </label>
+                      {/*<label*/}
+                      {/*  htmlFor='file-upload'*/}
+                      {/*  className='relative cursor-pointer bg-white rounded-md font-medium text-green-600 hover:text-green-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-green-500'*/}
+                      {/*>*/}
+                      {/*  <input*/}
+                      {/*    id='file-upload'*/}
+                      {/*    name='file-upload'*/}
+                      {/*    type='file'*/}
+                      {/*    onChange={async (e) => {*/}
+                      {/*      const { imageUrl, imageSize, imageType } =*/}
+                      {/*        await uploadFileToWebStorage(e.target.files);*/}
+                      {/*      if (!imageUrl) {*/}
+                      {/*        alert('failed to upload image');*/}
+                      {/*        return;*/}
+                      {/*      }*/}
+                      {/*      setIpfsImage({*/}
+                      {/*        imageUrl,*/}
+                      {/*        imageSize,*/}
+                      {/*        imageType,*/}
+                      {/*      });*/}
+                      {/*    }}*/}
+                      {/*  />*/}
+                      {/*</label>*/}
                       {/*<p className="pl-1">attach your file here</p>*/}
                     </div>
                   </div>
