@@ -37,11 +37,11 @@ const ArticleCard = ({ id }) => {
     <div className="border border-2 border-gray-300 p-4 mt-3 rounded-lg cursor-pointer" onClick={() => {
       router.push(`article/${id}`)
     }}>
-      <div className="flex">
-        <div className="mr-4 flex-shrink-0">
-          <img className="h-48 w-64 object-cover rounded-lg" src={article['nms-article'][5]['enclosure-url']} alt="" />
+      <div className="w-full lg:max-w-full lg:flex lg:flex-row">
+        <div className="mr-4 lg:basis-1/3 sm:basis-1/1">
+          <img className="lg:h-40 lg:w-64 sm:w-full lg:object-cover rounded-lg" src={article['nms-article'][5]['enclosure-url']} alt="" />
         </div>
-        <div>
+        <div className="lg:basis-2/3 sm:basis-1/1">
           <h2 className="text-3xl font-bold">{article.name}</h2>
           <p className="mt-1 font-normal">
             {article.description}

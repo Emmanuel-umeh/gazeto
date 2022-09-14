@@ -1,13 +1,13 @@
-import { useRouter } from "next/router";
-import ReactMarkdown from "react-markdown";
-import Link from "next/link";
-import {useContractCall} from "../../../hooks/contract/useContractCall";
-import {useEffect, useState} from "react";
-import Spinner from "../../../components/Spinner";
-import {fetchNftMeta} from "../../../helpers/nft";
-import {truncateEthAddress} from "../../../helpers/utils";
-import axios from "axios";
-
+import { useRouter } from 'next/router';
+import ReactMarkdown from 'react-markdown';
+import Link from 'next/link';
+import Head from 'next/head'
+import { useContractCall } from '../../../hooks/contract/useContractCall';
+import { useEffect, useState } from 'react';
+import Spinner from '../../../components/Spinner';
+import { fetchNftMeta } from '../../../helpers/nft';
+import { truncateEthAddress } from '../../../helpers/utils';
+import axios from 'axios';
 
 export default function PostPage() {
   const router = useRouter();
@@ -44,18 +44,17 @@ export default function PostPage() {
   `;
 
   const [article, setArticle] = useState(null);
-  const [content, setContent] = useState("");
-  const {data, isLoading, isFetched} = useContractCall("tokenURI", id, false);
+  const [content, setContent] = useState('');
+  const { data, isLoading, isFetched } = useContractCall('tokenURI', id, false);
   useEffect(() => {
-    fetchNftData()
+    fetchNftData();
   }, [data]);
 
   const fetchNftData = async () => {
-    if(!data) return
-    const resp = await fetchNftMeta(data)
-    setArticle(resp?.data)
-  }
-
+    if (!data) return;
+    const resp = await fetchNftMeta(data);
+    setArticle(resp?.data);
+  };
 
   // if(!isFetched || !article){
   //   return(
@@ -92,65 +91,72 @@ export default function PostPage() {
   // );
 
   useEffect(() => {
-    getMarkdown()
-  }, [article])
+    getMarkdown();
+  }, [article]);
 
   const getMarkdown = async () => {
-    try{
-      if(!article || !article['nms-article']) return
-    const textToMarkdown = article['nms-article'][1]['link'];
-    if (!textToMarkdown) {
-      return
+    try {
+      if (!article || !article['nms-article']) return;
+      const textToMarkdown = article['nms-article'][1]['link'];
+      if (!textToMarkdown) {
+        return;
+      }
+      const { data } = await axios.get(textToMarkdown.imageUrl);
+      setContent(data.toString());
+    } catch (e) {
+      console.log({ e });
     }
-    const {data} = await axios.get(textToMarkdown.imageUrl)
-    setContent(data.toString())
-    }
-    catch(e){
-      console.log({e})
+  };
 
-    }
-  }
-
-  if(isLoading){
+  if (isLoading) {
     return (
-        <div className="p-4 mt-3 rounded-lg mt-40">
-          <div className="flex justify-center align-center">
-            <Spinner size={'10vw'} color={'black'} loading={true} />
-          </div>
+      <div className='p-4 mt-3 rounded-lg mt-40'>
+        <div className='flex justify-center align-center'>
+          <Spinner size={'10vw'} color={'black'} loading={true} />
         </div>
-    )
+      </div>
+    );
   }
 
-  if(!article){
-    return <></>
+  if (!article) {
+    return <></>;
   }
   return (
     <>
-    <div className="relative bg-white py-16">
-      <div className="hidden lg:absolute lg:block lg:h-full lg:w-full">
-        <div className="relative mx-auto h-full max-w-prose text-lg" aria-hidden="true">
-        <figure>
-            <img
-              className="w-full rounded-lg"
-              src={article['nms-article'][5]['enclosure-url']}
-              alt=""
-              width={1310}
-              height={873}
-            />
-          </figure>
-          <div className="prose">
-            {content ?
+      <Head>
+        <title>{ article && article.name } | Gazeto</title>
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+      </Head>
+      <div className='relative bg-white py-8'>
+        <div className='hidden lg:absolute  lg:block lg:h-full lg:w-full'>
+          <div
+            className='relative mx-auto h-full max-w-prose text-lg'
+            aria-hidden='true'
+          >
+            <div>
+              <Link href='/nft-explorer'>
+                <a>&#8592; Back to all posts</a>
+              </Link>
+            </div>
+            <div className='mt-4 mb-2 flex-shrink-0'>
+              <img
+                className='h-96 w-full object-cover rounded-lg'
+                src={article['nms-article'][5]['enclosure-url']}
+                alt=''
+              />
+            </div>
+            <div className='prose pb-16'>
+              {content ? (
                 <ReactMarkdown>{content}</ReactMarkdown>
-                :
-
-                <div className="flex mt-10 mb-20 justify-center align-center">
+              ) : (
+                <div className='flex mt-10 mb-20 justify-center align-center'>
                   <Spinner size={'10vw'} color={'black'} loading={true} />
-                </div>}
-
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
-};
+}
