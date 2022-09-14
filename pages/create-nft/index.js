@@ -130,6 +130,20 @@ const MintNft = () => {
     }
   };
 
+  const onUpload = async (e) => {
+    const { imageUrl, imageSize, imageType } =
+      await uploadFileToWebStorage(e.target.files);
+    if (!imageUrl) {
+      alert('failed to upload image');
+      return;
+    }
+    setIpfsImage({
+      imageUrl,
+      imageSize,
+      imageType,
+    });
+  };
+
   return (
     <>
       <Head>
@@ -261,7 +275,7 @@ const MintNft = () => {
                   </div>
                 )}
                 <div className='mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md'>
-
+                    
                   <div className='space-y-1 text-center'>
                     <svg
                       className='mx-auto h-12 w-12 text-gray-400'
@@ -277,7 +291,7 @@ const MintNft = () => {
                         strokeLinejoin='round'
                       />
                     </svg>
-
+                    
                     <div className='flex text-sm text-gray-600'>
                       <label
                         htmlFor='file-upload'
@@ -287,26 +301,7 @@ const MintNft = () => {
                           id='file-upload'
                           name='file-upload'
                           type='file'
-                          onChange={async (e) => {
-                            console.log({e})
-                            const res =
-                              await uploadFileToWebStorage(e.target.files);
-                            console.log({res})
-                            if(!res){
-                              alert('failed to upload image');
-                              return;
-                            }
-                            const { imageUrl, imageSize, imageType } = res
-                            if (!imageUrl) {
-                              alert('failed to upload image');
-                              return;
-                            }
-                            setIpfsImage({
-                              imageUrl,
-                              imageSize,
-                              imageType,
-                            });
-                          }}
+                          onChange={onUpload}
                         />
                       </label>
                       {/*<p className="pl-1">attach your file here</p>*/}
