@@ -1,12 +1,12 @@
-import {Web3Storage, File, Blob} from 'web3.storage/dist/bundle.esm.min.js'
+import {Web3Storage, File, Blob} from 'web3.storage'
 import axios from "axios";
 // function to upload a file to IPFS via web3.storage
-export const uploadFileToWebStorage = async (file) => {
+export const uploadFileToWebStorage = async (fileList) => {
     // Construct with token and endpoint
     const client = new Web3Storage({token: process.env.NEXT_PUBLIC_STORAGE_API_KEY})
-    if (!file) return;
+    if (!fileList) return;
     // Pack files into a CAR and send to web3.storage
-    const rootCid = await client.put(file) // Promise<CIDString>
+    const rootCid = await client.put(fileList) // Promise<CIDString>
     // Fetch and verify files from web3.storage
     const res = await client.get(rootCid) // Promise<Web3Response | null>
     const files = await res.files() // Promise<Web3File[]>

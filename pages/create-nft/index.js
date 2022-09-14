@@ -130,6 +130,20 @@ const MintNft = () => {
     }
   };
 
+  const onUpload = async (e) => {
+    const { imageUrl, imageSize, imageType } =
+      await uploadFileToWebStorage(e.target.files);
+    if (!imageUrl) {
+      alert('failed to upload image');
+      return;
+    }
+    setIpfsImage({
+      imageUrl,
+      imageSize,
+      imageType,
+    });
+  };
+
   return (
     <>
       <Head>
@@ -287,19 +301,7 @@ const MintNft = () => {
                           id='file-upload'
                           name='file-upload'
                           type='file'
-                          onChange={async (e) => {
-                            const { imageUrl, imageSize, imageType } =
-                              await uploadFileToWebStorage(e.target.files);
-                            if (!imageUrl) {
-                              alert('failed to upload image');
-                              return;
-                            }
-                            setIpfsImage({
-                              imageUrl,
-                              imageSize,
-                              imageType,
-                            });
-                          }}
+                          onChange={onUpload}
                         />
                       </label>
                       {/*<p className="pl-1">attach your file here</p>*/}
