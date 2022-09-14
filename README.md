@@ -1,7 +1,10 @@
 
 
 <img src="public/gazeto.svg" alt="gazeto logo" height="200px" width="100%">
- <p>The go to NFT metadata standard for articles.
+<h2><a target="_blank" href="https://gazetodapp.vercel.app/">Live Demo</a> </h2>
+
+<p>
+This project is a demo client for implementing an NFT metadata standard for long-form writing. In this example the standard allows users to publish and access articles as NFTs. We believe that NFT metadata standards can create a shared, interoperable content layer for Web3. We wanted to show case the power of such standards with a demonstration
 </p>
 
 ![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png)
