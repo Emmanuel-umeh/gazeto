@@ -7,6 +7,7 @@ export const uploadFileToWebStorage = async (file) => {
         const client = new Web3Storage({token: process.env.NEXT_PUBLIC_STORAGE_API_KEY})
         console.log('stuff ', process.env.NEXT_PUBLIC_STORAGE_API_KEY  )
         if (!file) return;
+        console.log({file, client})
         // Pack files into a CAR and send to web3.storage
         const rootCid = await client.put(file) // Promise<CIDString>
         console.log({rootCid})
