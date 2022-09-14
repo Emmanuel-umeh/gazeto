@@ -9,8 +9,10 @@ export const uploadFileToWebStorage = async (file) => {
         if (!file) return;
         // Pack files into a CAR and send to web3.storage
         const rootCid = await client.put(file) // Promise<CIDString>
+        console.log({rootCid})
         // Fetch and verify files from web3.storage
         const res = await client.get(rootCid) // Promise<Web3Response | null>
+        console.log({res})
         const files = await res.files() // Promise<Web3File[]>
 
         return {
