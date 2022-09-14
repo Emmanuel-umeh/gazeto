@@ -1,6 +1,6 @@
 
 
-<img src="readme/gazeto.svg" alt="Animated gif pacman game" height="200px" width="100%">
+<img src="public/gazeto.svg" alt="gazeto logo" height="200px" width="100%">
  <p>The go to NFT metadata standard for articles.
 </p>
 
